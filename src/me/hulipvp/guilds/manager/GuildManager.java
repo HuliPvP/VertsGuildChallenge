@@ -58,5 +58,25 @@ public class GuildManager {
 	public Guild getGuildByPlayer(UUID uuid) {
 		return guilds.stream().filter(guild -> guild.getMembers().stream().filter(member -> member.getUuid() == uuid).collect(Collectors.toList()).contains(uuid)).findFirst().orElse(null);
 	}
+	
+	/**
+	 * Creates a new Guild and then stores it
+	 * 
+	 * @param name - The name of the Guild
+	 * @param uuid - The UUID of the Leader of the Guild
+	 */
+	public void createGuild(String name, UUID uuid) {
+		Guild guild = new Guild(name, uuid);
+		guilds.add(guild);
+	}
+	
+	/**
+	 * Removes a guild from the stored Guilds
+	 * 
+	 * @param guild - The Guild you wish to disband
+	 */
+	public void disbandGuild(Guild guild) {
+		guilds.remove(guild);
+	}
 
 }

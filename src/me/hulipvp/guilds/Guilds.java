@@ -3,7 +3,7 @@ package me.hulipvp.guilds;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lombok.Getter;
-import me.hulipvp.guilds.command.BaseCommand;
+import me.hulipvp.guilds.command.GuildCommand;
 import me.hulipvp.guilds.command.api.CommandApi;
 import me.hulipvp.guilds.manager.GuildManager;
 
@@ -26,7 +26,7 @@ public class Guilds extends JavaPlugin {
 		guildManager = new GuildManager(this);
 		
 		commandApi = new CommandApi(this);
-		commandApi.getCommandManager().registerCommands(new BaseCommand());
+		commandApi.getCommandManager().registerCommands(new GuildCommand());
 		
 	}
 	

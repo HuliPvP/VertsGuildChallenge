@@ -5,17 +5,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import lombok.Getter;
+import me.hulipvp.guilds.Guilds;
 import me.hulipvp.guilds.structure.Role;
 
 @Getter
 public abstract class StringArgument {
 
+	public Guilds plugin;
+	
     private String[] aliases;
     private String description;
     private String permission;
     private boolean playerOnly;
 
     public StringArgument() {
+    	this.plugin = Guilds.getInstance();
         this.aliases = aliases();
         this.description = description();
         this.permission = permission();

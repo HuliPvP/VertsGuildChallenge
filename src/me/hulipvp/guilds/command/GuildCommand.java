@@ -11,18 +11,24 @@ import org.bukkit.command.CommandSender;
 import me.hulipvp.guilds.command.api.StringArgument;
 import me.hulipvp.guilds.command.api.annotation.Command;
 import me.hulipvp.guilds.command.leader.GuildCreate;
+import me.hulipvp.guilds.command.leader.GuildDisband;
+import me.hulipvp.guilds.command.leader.GuildInvite;
+import me.hulipvp.guilds.command.normal.GuildJoin;
 
-public class BaseCommand {
+public class GuildCommand {
 	
 	// The list of StringArguments for the Guild command
 	private static List<StringArgument> arguments;
 	
-	public BaseCommand() {
+	public GuildCommand() {
 		
 		arguments = new ArrayList<>();
 		
 		Stream.of(
-				new GuildCreate()
+				new GuildCreate(),
+				new GuildDisband(),
+				new GuildInvite(),
+				new GuildJoin()
 				)
 		.forEach(command -> arguments.add(command));
 		
