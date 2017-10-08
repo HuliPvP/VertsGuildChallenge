@@ -4,12 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import me.hulipvp.guilds.command.api.StringArgument;
-import me.hulipvp.guilds.structure.Role;
+import me.hulipvp.guilds.structure.member.Role;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-
-import me.hulipvp.guilds.structure.Role;
 
 public class GuildLoad extends StringArgument {
 	

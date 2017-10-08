@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.hulipvp.guilds.command.api.StringArgument;
-import me.hulipvp.guilds.structure.Role;
+import me.hulipvp.guilds.structure.member.Role;
 
 public class GuildMessage extends StringArgument {
 

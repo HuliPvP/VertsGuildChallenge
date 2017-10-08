@@ -20,8 +20,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import lombok.Getter;
 import me.hulipvp.guilds.Guilds;
 import me.hulipvp.guilds.structure.Guild;
-import me.hulipvp.guilds.structure.Member;
-import me.hulipvp.guilds.structure.Role;
+import me.hulipvp.guilds.structure.member.Member;
+import me.hulipvp.guilds.structure.member.Role;
 import net.minecraft.util.com.google.gson.Gson;
 import net.minecraft.util.com.google.gson.GsonBuilder;
 import net.minecraft.util.com.google.gson.JsonIOException;
@@ -31,8 +31,8 @@ import net.minecraft.util.com.google.gson.JsonSyntaxException;
 public class GuildManager {
 	
 	private Guilds plugin;
-	private File file;
 	
+	private File file;
 	private Gson gson;
 	
 	@Getter

@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import me.hulipvp.guilds.command.api.StringArgument;
-import me.hulipvp.guilds.structure.Role;
+import me.hulipvp.guilds.structure.member.Role;
 
 public class GuildSave extends StringArgument {
 

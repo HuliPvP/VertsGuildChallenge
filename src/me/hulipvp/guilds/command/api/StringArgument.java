@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import lombok.Getter;
 import me.hulipvp.guilds.Guilds;
-import me.hulipvp.guilds.structure.Role;
+import me.hulipvp.guilds.structure.member.Role;
 
 @Getter
 public abstract class StringArgument {

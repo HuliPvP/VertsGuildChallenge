@@ -16,6 +16,7 @@ import me.hulipvp.guilds.command.leader.GuildCreate;
 import me.hulipvp.guilds.command.leader.GuildDisband;
 import me.hulipvp.guilds.command.leader.GuildInvite;
 import me.hulipvp.guilds.command.leader.GuildKick;
+import me.hulipvp.guilds.command.leader.GuildPermission;
 import me.hulipvp.guilds.command.leader.GuildRename;
 import me.hulipvp.guilds.command.normal.GuildJoin;
 import me.hulipvp.guilds.command.normal.GuildLeave;
@@ -37,6 +38,7 @@ public class GuildCommand {
 				new GuildDisband(),
 				new GuildInvite(),
 				new GuildKick(),
+				new GuildPermission(),
 				new GuildRename(),
 				new GuildJoin(),
 				new GuildLeave(),

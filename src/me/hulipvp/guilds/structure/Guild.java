@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.hulipvp.guilds.structure.member.Member;
+import me.hulipvp.guilds.structure.member.Role;
 
 @Getter
 @Setter

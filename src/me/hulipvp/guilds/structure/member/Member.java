@@ -1,14 +1,18 @@
-package me.hulipvp.guilds.structure;
+package me.hulipvp.guilds.structure.member;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
+import me.hulipvp.guilds.structure.permission.PermissionType;
 
 @Getter
 public class Member {
 	
 	private UUID uuid;
 	private Role role;
+	private List<PermissionType> validPermissions;
 	
 	/**
 	 * The constructor to create a default Member
@@ -28,6 +32,7 @@ public class Member {
 	public Member(UUID uuid, Role role) {
 		this.uuid = uuid;
 		this.role = role;
+		this.validPermissions = new ArrayList<>();
 	}
 
 }

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import me.hulipvp.guilds.command.api.StringArgument;
 import me.hulipvp.guilds.structure.Guild;
-import me.hulipvp.guilds.structure.Role;
+import me.hulipvp.guilds.structure.member.Role;
 
 public class GuildKick extends StringArgument {
 

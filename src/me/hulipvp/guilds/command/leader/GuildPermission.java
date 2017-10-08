@@ -1,30 +1,28 @@
 package me.hulipvp.guilds.command.leader;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.hulipvp.guilds.command.api.StringArgument;
 import me.hulipvp.guilds.structure.Guild;
-import me.hulipvp.guilds.structure.member.Member;
 import me.hulipvp.guilds.structure.member.Role;
 
-public class GuildRename extends StringArgument {
+public class GuildPermission extends StringArgument {
 
 	@Override
 	public String[] aliases() {
-		return new String[] { "rename" };
+		return new String[] { "permission", "perm", "p" };
 	}
 
 	@Override
 	public String description() {
-		return "Rename your Guild";
+		return "Manage member's permissions";
 	}
 
 	@Override
 	public String permission() {
-		return "guild.cmd.rename";
+		return "guilds.cmd.permission";
 	}
 
 	@Override
@@ -46,18 +44,11 @@ public class GuildRename extends StringArgument {
 			return;
 		}
 		
-		if (args.length != 2) {
-			player.sendMessage(ChatColor.RED + "/" + label + " rename <name>");
+		if (args.length != 3) {
+			player.sendMessage(ChatColor.RED + "/" + label + " permission <name> <type>");
 			return;
 		}
 		
-		if (plugin.getGuildManager().getGuildByString(args[1]) != null) { 
-			player.sendMessage(ChatColor.RED + "A Guild by that name already exsists.");
-			return;
-		}
-		
-		Bukkit.broadcastMessage(ChatColor.BLUE + guild.getName() + ChatColor.YELLOW + " has renamed to " + ChatColor.GREEN + args[1]);
-		guild.setName(args[1]);
 	}
-
+	
 }
