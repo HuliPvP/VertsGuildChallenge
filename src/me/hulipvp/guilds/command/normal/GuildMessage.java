@@ -37,7 +37,7 @@ public class GuildMessage extends StringArgument {
 	@Override
 	public void onArgument(CommandSender sender, String label, String[] args) {
 		Player player = (Player) sender;
-		if (plugin.getGuildManager().getGuildByPlayer(player.getUniqueId()) != null) {
+		if (plugin.getGuildManager().getGuildByPlayer(player.getUniqueId()) == null) {
 			player.sendMessage(ChatColor.RED + "You are not in a Guild.");
 			return;
 		}
@@ -47,7 +47,7 @@ public class GuildMessage extends StringArgument {
 			return;
 		}
 		
-		String message = ChatColor.AQUA + "Guild |" + player.getName() + " > " + ChatColor.YELLOW + String.join(" ", args);
+		String message = ChatColor.AQUA + "Guild | " + player.getName() + " > " + ChatColor.YELLOW + String.join(" ", args).replaceFirst("message ", "");
 		plugin.getGuildManager().getGuildByPlayer(player.getUniqueId()).sendMessage(message);
 	}
 

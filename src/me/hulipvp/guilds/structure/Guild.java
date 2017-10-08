@@ -14,6 +14,8 @@ import lombok.Setter;
 @Setter
 public class Guild {
 	
+	private UUID id;
+	
 	private String name;
 	private String motd;
 	
@@ -24,17 +26,33 @@ public class Guild {
 	/**
 	 * Instantiates a new Guild
 	 * 
-	 * @param name
-	 * @param uuid
+	 * @param name - The name of the Guild
+	 * @param uuid - The UUID of the Leader
 	 */
 	public Guild(String name, UUID uuid) {
+		
+		this.id = UUID.randomUUID();
 	
 		this.name = name;
-		this.members = new HashSet<>();
-		this.invites = new HashSet<>();
 		this.motd = null;
+		this.members = new HashSet<>();
+		
+		this.invites = new HashSet<>();
 		
 		members.add(new Member(uuid, Role.LEADER));
+	}
+	
+	/**
+	 * Instantiated a new Guild where the Guild is fully setup
+	 * 
+	 * @param name - The name of the Guild
+	 * @param leaderUuid - The UUID of the leader
+	 * @param guildUuid - The UUID of the Guild
+	 */
+	public Guild(String name, UUID leaderUuid, UUID guildUuid, String motd) {
+		this(name, leaderUuid);
+		this.id = guildUuid;
+		this.motd = motd;
 	}
 	
 	/**

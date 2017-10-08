@@ -30,6 +30,12 @@ public class Guilds extends JavaPlugin {
 		
 	}
 	
+	public void onDisable() {
+		
+		guildManager.save();
+		
+	}
+	
 	/**
 	 * Access the ONLY instance allowed in Guilds
 	 * 

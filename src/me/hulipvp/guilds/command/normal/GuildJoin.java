@@ -39,7 +39,7 @@ public class GuildJoin extends StringArgument {
 	@Override
 	public void onArgument(CommandSender sender, String label, String[] args) {
 		Player player = (Player) sender;
-		if (plugin.getGuildManager().getGuildByPlayer(player.getUniqueId()) == null) {
+		if (plugin.getGuildManager().getGuildByPlayer(player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.RED + "You are already in a Guild.");
 			return;
 		}

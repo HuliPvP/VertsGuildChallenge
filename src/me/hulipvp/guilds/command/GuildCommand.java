@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import me.hulipvp.guilds.command.admin.GuildLoad;
+import me.hulipvp.guilds.command.admin.GuildSave;
 import me.hulipvp.guilds.command.api.StringArgument;
 import me.hulipvp.guilds.command.api.annotation.Command;
 import me.hulipvp.guilds.command.leader.GuildCreate;
@@ -17,6 +19,7 @@ import me.hulipvp.guilds.command.leader.GuildKick;
 import me.hulipvp.guilds.command.leader.GuildRename;
 import me.hulipvp.guilds.command.normal.GuildJoin;
 import me.hulipvp.guilds.command.normal.GuildLeave;
+import me.hulipvp.guilds.command.normal.GuildMessage;
 
 public class GuildCommand {
 	
@@ -28,13 +31,16 @@ public class GuildCommand {
 		arguments = new ArrayList<>();
 		
 		Stream.of(
+				new GuildSave(),
+				new GuildLoad(),
 				new GuildCreate(),
 				new GuildDisband(),
 				new GuildInvite(),
 				new GuildKick(),
 				new GuildRename(),
 				new GuildJoin(),
-				new GuildLeave()
+				new GuildLeave(),
+				new GuildMessage()
 				)
 		.forEach(command -> arguments.add(command));
 		
@@ -55,16 +61,16 @@ public class GuildCommand {
         } else {
             String pre = args[0];
 
-            arguments.stream().filter(argument -> Stream.of(argument.getAliases()).collect(Collectors.toList()).contains(pre.toLowerCase())).forEach(argument -> {
-            	if (sender.hasPermission(argument.getPermission())) {
+            StringArgument stringArgument = arguments.stream().filter(argument -> Stream.of(argument.getAliases()).collect(Collectors.toList()).contains(pre.toLowerCase())).findFirst().orElse(null);
+            if (stringArgument == null) {
+            	sender.sendMessage(ChatColor.RED + "Invalid argument provided: " + pre);
+                sender.sendMessage(ChatColor.RED + "Use '/" + label + "' for a list of valid arguments.");
+            } else {
+            	if (sender.hasPermission(stringArgument.getPermission())) {
             		// TODO: Check for the required role of the argument
-            		argument.executeArgument(sender, label, args);
-                    return;
+            		stringArgument.executeArgument(sender, label, args);
                 }
-            });
-
-            sender.sendMessage(ChatColor.RED + "Invalid argument provided: " + pre);
-            sender.sendMessage(ChatColor.RED + "Use '/" + label + "' for a list of valid arguments.");
+            }
         }
 	}
 
