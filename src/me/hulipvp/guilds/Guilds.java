@@ -1,11 +1,14 @@
 package me.hulipvp.guilds;
 
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lombok.Getter;
 import me.hulipvp.guilds.command.GuildCommand;
 import me.hulipvp.guilds.command.api.CommandApi;
 import me.hulipvp.guilds.manager.GuildManager;
+import me.hulipvp.guilds.util.GuildTask;
 
 @Getter
 public class Guilds extends JavaPlugin {
@@ -28,6 +31,8 @@ public class Guilds extends JavaPlugin {
 		commandApi = new CommandApi(this);
 		commandApi.getCommandManager().registerCommands(new GuildCommand());
 		
+		new GuildTask(guildManager).runTaskTimerAsynchronously(this, TimeUnit.MINUTES.toSeconds(30L) * 20L, TimeUnit.MINUTES.toSeconds(30L) * 20L);
+		
 	}
 	
 	public void onDisable() {
@@ -39,7 +44,7 @@ public class Guilds extends JavaPlugin {
 	/**
 	 * Access the ONLY instance allowed in Guilds
 	 * 
-	 * @return instanc - The Guilds instance
+	 * @return instance - The Guilds instance
 	 */
 	public static Guilds getInstance() {
 		return instance;
