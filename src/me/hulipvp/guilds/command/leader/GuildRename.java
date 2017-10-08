@@ -6,45 +6,48 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.hulipvp.guilds.command.api.StringArgument;
+import me.hulipvp.guilds.structure.Guild;
+import me.hulipvp.guilds.structure.Member;
 import me.hulipvp.guilds.structure.Role;
 
-public class GuildCreate extends StringArgument {
+public class GuildRename extends StringArgument {
 
 	@Override
 	public String[] aliases() {
-		return new String[] { "create" };
+		return new String[] { "rename" };
 	}
 
 	@Override
 	public String description() {
-		return "Create a Guild";
+		return "Rename your Guild";
 	}
 
 	@Override
 	public String permission() {
-		return "guilds.cmd.create";
+		return "guild.cmd.rename";
 	}
 
 	@Override
 	public boolean playerOnly() {
 		return true;
 	}
-	
+
 	@Override
 	public Role requiredRole() {
-		return null;
+		return Role.LEADER;
 	}
 
 	@Override
 	public void onArgument(CommandSender sender, String label, String[] args) {
 		Player player = (Player) sender;
-		if (plugin.getGuildManager().getGuildByPlayer(player.getUniqueId()) == null) {
-			player.sendMessage(ChatColor.RED + "You must leave your current Guild to create a Guild.");
+		Guild guild = plugin.getGuildManager().getGuildByPlayer(player.getUniqueId());
+		if (guild == null || (guild != null && guild.getLeader().getUuid() != player.getUniqueId())) { 
+			player.sendMessage(ChatColor.RED + "You must be in a Guild to perform this action.");
 			return;
 		}
 		
 		if (args.length != 2) {
-			player.sendMessage(ChatColor.RED + "/" + label + " create <name>");
+			player.sendMessage(ChatColor.RED + "/" + label + " rename <name>");
 			return;
 		}
 		
@@ -53,8 +56,8 @@ public class GuildCreate extends StringArgument {
 			return;
 		}
 		
-		plugin.getGuildManager().createGuild(args[1], player.getUniqueId());
-		Bukkit.broadcastMessage(ChatColor.BLUE + args[1] + ChatColor.YELLOW + " Guild has been created by " + ChatColor.GREEN + player.getName());
+		Bukkit.broadcastMessage(ChatColor.BLUE + guild.getName() + ChatColor.YELLOW + " has renamed to " + ChatColor.GREEN + args[1]);
+		guild.setName(args[1]);
 	}
 
 }

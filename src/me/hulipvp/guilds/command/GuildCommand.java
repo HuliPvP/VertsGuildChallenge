@@ -13,12 +13,15 @@ import me.hulipvp.guilds.command.api.annotation.Command;
 import me.hulipvp.guilds.command.leader.GuildCreate;
 import me.hulipvp.guilds.command.leader.GuildDisband;
 import me.hulipvp.guilds.command.leader.GuildInvite;
+import me.hulipvp.guilds.command.leader.GuildKick;
+import me.hulipvp.guilds.command.leader.GuildRename;
 import me.hulipvp.guilds.command.normal.GuildJoin;
+import me.hulipvp.guilds.command.normal.GuildLeave;
 
 public class GuildCommand {
 	
 	// The list of StringArguments for the Guild command
-	private static List<StringArgument> arguments;
+	private List<StringArgument> arguments;
 	
 	public GuildCommand() {
 		
@@ -28,14 +31,13 @@ public class GuildCommand {
 				new GuildCreate(),
 				new GuildDisband(),
 				new GuildInvite(),
-				new GuildJoin()
+				new GuildKick(),
+				new GuildRename(),
+				new GuildJoin(),
+				new GuildLeave()
 				)
 		.forEach(command -> arguments.add(command));
 		
-	}
-	
-	public static List<StringArgument> getArguments() {
-		return arguments;
 	}
 	
 	/**
