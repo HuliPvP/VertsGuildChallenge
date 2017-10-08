@@ -1,7 +1,6 @@
 package me.hulipvp.guilds.manager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,19 +12,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import lombok.Getter;
 import me.hulipvp.guilds.Guilds;
 import me.hulipvp.guilds.structure.Guild;
 import me.hulipvp.guilds.structure.member.Member;
-import me.hulipvp.guilds.structure.member.Role;
 import net.minecraft.util.com.google.gson.Gson;
 import net.minecraft.util.com.google.gson.GsonBuilder;
-import net.minecraft.util.com.google.gson.JsonIOException;
-import net.minecraft.util.com.google.gson.JsonSyntaxException;
 
 
 public class GuildManager {
@@ -122,7 +116,6 @@ public class GuildManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/**
@@ -130,18 +123,22 @@ public class GuildManager {
 	 */
 	public void load() {
 		guilds.clear();
-		try {
-			guilds = null;
-			Map<String, Object> guildsMap = gson.fromJson(new FileReader(file), new HashMap<String, Object>().getClass());
-			if (guildsMap.get("guilds") != null) {
-				guilds = (Set<Guild>) guildsMap.get("guilds");
+		new BukkitRunnable() {
+			public void run() {
+				try {
+					guilds = null;
+					Map<String, Object> guildsMap = gson.fromJson(new FileReader(file), new HashMap<String, Object>().getClass());
+					if (guildsMap.get("guilds") != null) {
+						guilds = (Set<Guild>) guildsMap.get("guilds");
+					}
+				} catch (Exception exception) {
+					Bukkit.getLogger().severe("There were no Guilds found in the Guilds file.");
+				}
+				if (guilds == null) {
+					guilds = new HashSet<Guild>();
+				}
 			}
-		} catch (Exception exception) {
-			Bukkit.getLogger().severe("There were no Guilds found in the Guilds file.");
-		}
-		if (guilds == null) {
-			guilds = new HashSet<Guild>();
-		}
+		}.runTaskAsynchronously(plugin);
 	}
 	
 }

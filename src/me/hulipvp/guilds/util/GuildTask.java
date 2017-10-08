@@ -15,7 +15,7 @@ public class GuildTask extends BukkitRunnable {
 	/**
 	 * Save all Guilds periodically while the server is running
 	 * 
-	 * Be sure to make this task Asynchronous
+	 * Be sure to make this task asynchronous
 	 */
 	@Override
 	public void run() {

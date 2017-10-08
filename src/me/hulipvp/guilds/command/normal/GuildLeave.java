@@ -57,7 +57,7 @@ public class GuildLeave extends StringArgument {
 			guild.sendMessage(ChatColor.YELLOW + "Your leader has left so the Guild has been automatically disbanded");
 			return;
 		}
-		guild.sendMessage(ChatColor.RED + player.getName() + ChatColor.YELLOW + " has left the Guild");
+		guild.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has left the Guild");
 	}
 	
 }

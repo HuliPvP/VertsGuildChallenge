@@ -1,6 +1,7 @@
 package me.hulipvp.guilds.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -8,6 +9,7 @@ import java.util.stream.Stream;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import me.hulipvp.guilds.command.admin.GuildForceDisband;
 import me.hulipvp.guilds.command.admin.GuildLoad;
 import me.hulipvp.guilds.command.admin.GuildSave;
 import me.hulipvp.guilds.command.api.StringArgument;
@@ -32,6 +34,7 @@ public class GuildCommand {
 		arguments = new ArrayList<>();
 		
 		Stream.of(
+				new GuildForceDisband(),
 				new GuildSave(),
 				new GuildLoad(),
 				new GuildCreate(),
@@ -62,8 +65,8 @@ public class GuildCommand {
             arguments.stream().filter(argument -> sender.hasPermission(argument.getPermission())).forEach(argument -> sender.sendMessage(ChatColor.RED + "/" + label + " " + argument.getAliases()[0] + " - " + argument.getDescription()));
         } else {
             String pre = args[0];
-
-            StringArgument stringArgument = arguments.stream().filter(argument -> Stream.of(argument.getAliases()).collect(Collectors.toList()).contains(pre.toLowerCase())).findFirst().orElse(null);
+            
+            StringArgument stringArgument = arguments.stream().filter(argument -> Arrays.stream(argument.getAliases()).collect(Collectors.toList()).contains(pre.toLowerCase())).findFirst().orElse(null);
             if (stringArgument == null) {
             	sender.sendMessage(ChatColor.RED + "Invalid argument provided: " + pre);
                 sender.sendMessage(ChatColor.RED + "Use '/" + label + "' for a list of valid arguments.");

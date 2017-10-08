@@ -1,36 +1,34 @@
-package me.hulipvp.guilds.command.normal;
+package me.hulipvp.guilds.command.admin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import me.hulipvp.guilds.command.api.StringArgument;
 import me.hulipvp.guilds.structure.Guild;
-import me.hulipvp.guilds.structure.member.Member;
 import me.hulipvp.guilds.structure.member.Role;
 
-public class GuildJoin extends StringArgument {
+public class GuildForceDisband extends StringArgument {
 
 	@Override
 	public String[] aliases() {
-		return new String[] { "join", "j", "accept" };
+		return new String[] { "forcedisband", "remove" };
 	}
 
 	@Override
 	public String description() {
-		return "Join a Guild that you were invited to";
+		return "Forcefully disband/remove a Guild";
 	}
 
 	@Override
 	public String permission() {
-		return "guild.cmd.join";
+		return "guilds.cmd.forcedisband";
 	}
 
 	@Override
 	public boolean playerOnly() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -40,17 +38,11 @@ public class GuildJoin extends StringArgument {
 
 	@Override
 	public void onArgument(CommandSender sender, String label, String[] args) {
-		Player player = (Player) sender;
-		if (plugin.getGuildManager().getGuildByPlayer(player.getUniqueId()) != null) {
-			player.sendMessage(ChatColor.RED + "You are already in a Guild.");
-			return;
-		}
-		
 		if (args.length != 2) {
-			player.sendMessage(ChatColor.RED + "/" + label + " join <name>");
+			sender.sendMessage(ChatColor.RED + "/" + label + " forcedisband <name>");
 			return;
 		}
-		
+
 		Guild guild = null;
 		guild = plugin.getGuildManager().getGuildByString(args[1]);
 		if (guild == null) {
@@ -59,16 +51,14 @@ public class GuildJoin extends StringArgument {
 				guild = plugin.getGuildManager().getGuildByPlayer(offlinePlayer.getUniqueId());
 			}
 		}
-		
+
 		if (guild == null) {
-			player.sendMessage(ChatColor.RED + "No guild by that name or with that player was found.");
+			sender.sendMessage(ChatColor.RED + "No guild by that name or with that player was found.");
 			return;
 		}
 		
-		if (guild.getInvites().contains(player.getUniqueId())) {
-			guild.getMembers().add(new Member(player.getUniqueId()));
-			guild.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has joined the Guild");
-		}
+		Bukkit.broadcastMessage(ChatColor.BLUE + guild.getName() + ChatColor.YELLOW + " has been forcefully disbanded by " + ChatColor.GREEN + sender.getName());
+		plugin.getGuildManager().disbandGuild(guild);
 	}
 
 }
