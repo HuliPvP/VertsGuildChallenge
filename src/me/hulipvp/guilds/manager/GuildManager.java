@@ -1,13 +1,15 @@
 package me.hulipvp.guilds.manager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -20,13 +22,18 @@ import me.hulipvp.guilds.Guilds;
 import me.hulipvp.guilds.structure.Guild;
 import me.hulipvp.guilds.structure.Member;
 import me.hulipvp.guilds.structure.Role;
+import net.minecraft.util.com.google.gson.Gson;
+import net.minecraft.util.com.google.gson.GsonBuilder;
+import net.minecraft.util.com.google.gson.JsonIOException;
+import net.minecraft.util.com.google.gson.JsonSyntaxException;
 
 
 public class GuildManager {
 	
 	private Guilds plugin;
 	private File file;
-	private FileConfiguration config;
+	
+	private Gson gson;
 	
 	@Getter
 	private Set<Guild> guilds;
@@ -34,17 +41,12 @@ public class GuildManager {
 	public GuildManager(Guilds plugin) {
 		
 		this.plugin = plugin;
-		// TODO: Convert to JSON because YAML is a pain in the arse
-		this.file = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "guilds.yml");
+		this.file = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "guilds.json");
 		plugin.getDataFolder().mkdirs();
 		if (!this.file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			plugin.saveResource("guilds.json", false);
 		}
-		config = YamlConfiguration.loadConfiguration(file);
+		gson = new GsonBuilder().setPrettyPrinting().create();
 		
 		guilds = new HashSet<>();
 		
@@ -95,47 +97,21 @@ public class GuildManager {
 	
 	
 	/**
-	 * Turns a ConfigurationSection into a Guild
-	 * 
-	 * @param configurationSection - The section which holds all of the Guild's data
-	 * @return Guild - A new Guild which was instantiated with the data provided from the ConfigurationSection
-	 */
-	public Guild guildFromSection(ConfigurationSection configurationSection) {
-		UUID id = UUID.fromString(configurationSection.getString("id"));
-		String name = configurationSection.getString("name");
-		String motd = configurationSection.getString("motd");
-		Set<Member> members = (Set<Member>) configurationSection.get("members");
-		return new Guild(name, members.stream().filter(member -> member.getRole() == Role.LEADER).findFirst().orElse(null).getUuid(), id, motd);
-	}
-	
-	
-	/**
-	 * Turns a Guild into a ConfigurationSection so you can save it into the YamlConfiguration
-	 * 
-	 * @param guild - The Guild you wish to convert into a ConfigurationSection
-	 * @return configurationSection - The section which holds all of the Guild's data
-	 */
-	public ConfigurationSection guildToSection(Guild guild) {
-		ConfigurationSection configurationSection = new YamlConfiguration();
-		configurationSection.set("id", guild.getId().toString());
-		configurationSection.set("name", guild.getName());
-		configurationSection.set("motd", guild.getMotd());
-		configurationSection.set("members", guild.getMembers());
-		return configurationSection;
-	}
-	
-	/**
 	 * Allows you to save all of the Guilds which are loaded onto the server
 	 */
 	public void save() {
-		Map<String, ConfigurationSection> configurationSections = new HashMap<>();
-		guilds.stream().forEach(guild -> configurationSections.put(guild.getId().toString(), guildToSection(guild)));
-		config.set("guilds", configurationSections);
 		try {
-			config.save(file);
+			Map<String, Set<Guild>> guildsMap = new HashMap<>();
+			guildsMap.put("guilds", guilds);
+			String json = gson.toJson(guildsMap);
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(json);
+			fileWriter.flush();
+			fileWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	/**
@@ -143,13 +119,17 @@ public class GuildManager {
 	 */
 	public void load() {
 		guilds.clear();
-		ConfigurationSection configurationSection = config.getConfigurationSection("guilds");
-		if (configurationSection != null) {
-			configurationSection.getKeys(false).stream().forEach(sectionKey -> {
-				guilds.add(guildFromSection(configurationSection.getConfigurationSection(sectionKey)));
-			});
-		} else {
-			Bukkit.getLogger().log(Level.WARNING, "There seems to be no Guilds setup!");
+		try {
+			guilds = null;
+			Map<String, Object> guildsMap = gson.fromJson(new FileReader(file), new HashMap<String, Object>().getClass());
+			if (guildsMap.get("guilds") != null) {
+				guilds = (Set<Guild>) guildsMap.get("guilds");
+			}
+		} catch (Exception exception) {
+			Bukkit.getLogger().severe("There were no Guilds found in the Guilds file.");
+		}
+		if (guilds == null) {
+			guilds = new HashSet<Guild>();
 		}
 	}
 	
