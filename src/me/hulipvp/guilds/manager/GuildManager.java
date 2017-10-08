@@ -76,6 +76,17 @@ public class GuildManager {
 	}
 	
 	/**
+	 * Use this to get a Member object which has the same UUID as the provided UUID in
+	 * the parameter
+	 *
+	 * @param uuid - The UUID of the Member you wish to find
+	 * @return Member - the Member object which has the same UUID as the provided UUID
+	 */
+	public Member getMemberByUuid(UUID uuid) {
+		return getGuildByPlayer(uuid).getMembers().stream().filter(member -> member.getUuid() == uuid).findFirst().orElse(null);
+	}
+	
+	/**
 	 * Creates a new Guild and then stores it
 	 * 
 	 * @param name - The name of the Guild

@@ -1,5 +1,7 @@
 package me.hulipvp.guilds.command.api;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,6 +19,7 @@ public abstract class StringArgument {
     private String description;
     private String permission;
     private boolean playerOnly;
+    private Role requiredRole;
 
     public StringArgument() {
     	this.plugin = Guilds.getInstance();
@@ -24,14 +27,21 @@ public abstract class StringArgument {
         this.description = description();
         this.permission = permission();
         this.playerOnly = playerOnly();
+        this.requiredRole = requiredRole();
     }
 
     public void executeArgument(CommandSender sender, String label, String[] args) {
-        if (playerOnly && !(sender instanceof Player)) {
+        if (this.playerOnly && !(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Player only argument.");
-        } else {
-            onArgument(sender, label, args);
-        }
+            return;
+        } 
+        
+        if (this.requiredRole != null && plugin.getGuildManager().getGuildByPlayer(((Player)sender).getUniqueId()).getMembers().stream().filter(member -> member.getUuid() == ((Player)sender).getUniqueId()).findFirst().orElse(null).getRole() == this.requiredRole) {
+            sender.sendMessage(ChatColor.RED + "You do not have the required role for this Guild command.");
+            return;
+        } 
+        
+        onArgument(sender, label, args);
     }
     
     public abstract String[] aliases();

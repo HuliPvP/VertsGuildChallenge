@@ -61,7 +61,7 @@ public class GuildJoin extends StringArgument {
 		}
 		
 		if (guild.getInvites().contains(player.getUniqueId())) {
-			guild.getMembers().add(new Member(player.getUniqueId(), Role.MEMBER));
+			guild.getMembers().add(new Member(player.getUniqueId()));
 			guild.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has joined the Guild");
 		}
 	}

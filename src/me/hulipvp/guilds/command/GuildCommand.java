@@ -67,7 +67,6 @@ public class GuildCommand {
                 sender.sendMessage(ChatColor.RED + "Use '/" + label + "' for a list of valid arguments.");
             } else {
             	if (sender.hasPermission(stringArgument.getPermission())) {
-            		// TODO: Check for the required role of the argument
             		stringArgument.executeArgument(sender, label, args);
                 }
             }
