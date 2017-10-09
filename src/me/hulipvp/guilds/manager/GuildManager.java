@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,7 +21,7 @@ import me.hulipvp.guilds.structure.Guild;
 import me.hulipvp.guilds.structure.member.Member;
 import net.minecraft.util.com.google.gson.Gson;
 import net.minecraft.util.com.google.gson.GsonBuilder;
-
+import net.minecraft.util.com.google.gson.reflect.TypeToken;
 
 public class GuildManager {
 	
@@ -127,11 +128,13 @@ public class GuildManager {
 			public void run() {
 				try {
 					guilds = null;
-					Map<String, Object> guildsMap = gson.fromJson(new FileReader(file), new HashMap<String, Object>().getClass());
+					Type type = new TypeToken<Map<String, HashSet<Guild>>>(){}.getClass();
+					Map<String, HashSet<Guild>> guildsMap = gson.fromJson(new FileReader(file), type);
 					if (guildsMap.get("guilds") != null) {
 						guilds = (Set<Guild>) guildsMap.get("guilds");
 					}
 				} catch (Exception exception) {
+					exception.printStackTrace();
 					Bukkit.getLogger().severe("There were no Guilds found in the Guilds file.");
 				}
 				if (guilds == null) {

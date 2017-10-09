@@ -36,7 +36,7 @@ public abstract class StringArgument {
             return;
         } 
         
-        if (this.requiredRole != null && plugin.getGuildManager().getGuildByPlayer(((Player)sender).getUniqueId()).getMembers().stream().filter(member -> member.getUuid() == ((Player)sender).getUniqueId()).findFirst().orElse(null).getRole() == this.requiredRole) {
+        if (this.requiredRole != null && plugin.getGuildManager().getMemberByUuid(((Player)sender).getUniqueId()).getRole() != this.requiredRole) {
             sender.sendMessage(ChatColor.RED + "You do not have the required role for this Guild command.");
             return;
         } 
