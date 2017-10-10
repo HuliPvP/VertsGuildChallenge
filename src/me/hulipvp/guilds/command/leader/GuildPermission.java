@@ -73,7 +73,7 @@ public class GuildPermission extends StringArgument {
 			return;
 		}
 		
-		if (playerGuild == guild) {
+		if (playerGuild != guild) {
 			player.sendMessage(ChatColor.RED + "That player is not in your Guild.");
 			return;
 		}

@@ -131,7 +131,7 @@ public class GuildManager {
 					Type type = new TypeToken<Map<String, HashSet<Guild>>>(){}.getClass();
 					Map<String, HashSet<Guild>> guildsMap = gson.fromJson(new FileReader(file), type);
 					if (guildsMap.get("guilds") != null) {
-						guilds = (Set<Guild>) guildsMap.get("guilds");
+						guilds = guildsMap.get("guilds");
 					}
 				} catch (Exception exception) {
 					exception.printStackTrace();
